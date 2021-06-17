@@ -1,25 +1,21 @@
 <template>
   <div>
-    <button @click="tabs.shift()">Remove one at start</button>
-    <button @click="tabs.push('testt')">Add at the end</button>
-    <button @click="tabs.unshift('new start')">Add one at start</button>
-    <router-link to="/test">Go to a different route</router-link>
-    <form-wizard @on-complete="onComplete"
+    <gds-form-wizard @on-complete="onComplete"
                  @on-change="handleChange"
                  :start-index.sync="activeIndex"
                  color="#e74c3c">
-       <tab-content v-for="tab in tabs" :title="tab" :key="tab">{{tab}}</tab-content>
+       <gds-tab-content v-for="tab in tabs" :title="tab" :key="tab">{{tab}}</gds-tab-content>
         <transition name="fade" mode="out-in">
           <router-view></router-view>
         </transition>
-    </form-wizard>
+    </gds-form-wizard>
   </div>
 </template>
 
 <script>
-  import TabContent from "../src/components/TabContent";
+  import GdsTabContent from "../src/components/TabContent";
   export default {
-    components: {TabContent},
+    components: {GdsTabContent},
     data () {
       return {
         loadingWizard: false,
@@ -37,7 +33,7 @@
         this.loadingWizard = value
       },
       handleChange(prevIndex, nextIndex){
-          console.log(`Changing from ${prevIndex} to ${nextIndex}`)
+         // console.log(`Changing from ${prevIndex} to ${nextIndex}`)
       },
       setError (error) {
         this.error = error
@@ -76,7 +72,7 @@
 
   body {
     margin-top: 20px;
-    background-color: #ecf0f1;
+    background-color: #fff;
   }
 
   .card-footer {

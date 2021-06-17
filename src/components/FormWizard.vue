@@ -8,10 +8,26 @@
       </slot>
     </div>
     <div class="wizard-navigation">
-      <div class="wizard-progress-with-circle" v-if="!isVertical">
+       <div class="wizard-progress-with-circle" v-if="progressBarShow">
         <div class="wizard-progress-bar"
              :style="progressBarStyle"></div>
       </div>
+      <br />
+         <div class="wizard-footer-left">
+          <span @click="prevTab" @keyup.enter="prevTab" v-if="displayPrevButton" role="button" tabindex="0">
+            <slot name="prev" v-bind="slotProps">
+              <span class="backButton" :disabled="loading">
+                             <svg width="11" height="19" viewBox="0 0 11 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M9.9226 0.405563C10.3077 0.405563 10.6191 0.721741 10.6191 1.10686C10.6191 1.29229 10.5454 1.4682 10.4147 1.59896L2.30344 9.71021L10.4147 17.8167C10.6833 18.0949 10.6738 18.537 10.3981 18.8057C10.127 19.0648 9.69914 19.0648 9.42813 18.8057L0.822396 10.2023C0.551388 9.92892 0.551388 9.48675 0.822396 9.21336L9.42813 0.61001C9.55888 0.479259 9.73479 0.405563 9.9226 0.405563Z" fill="#414A4E"/>
+</svg>
+                {{backButtonText}}
+              </span>
+            </slot>
+          </span>
+          <slot name="custom-buttons-left" v-bind="slotProps"></slot>
+        </div>
+     
+      <br />
       <ul class="wizard-nav wizard-nav-pills" role="tablist" :class="stepsClasses">
         <slot name="step" v-for="(tab, index) in tabs"
               :tab="tab"
@@ -19,13 +35,7 @@
               :navigate-to-tab="navigateToTab"
               :step-size="stepSize"
               :transition="transition">
-          <wizard-step :tab="tab"
-                       :step-size="stepSize"
-                       @click.native="navigateToTab(index)"
-                       @keyup.enter.native="navigateToTab(index)"
-                       :transition="transition"
-                       :index="index">
-          </wizard-step>
+  
         </slot>
       </ul>
       <div class="wizard-tab-content">
@@ -37,32 +47,24 @@
     <div class="wizard-card-footer clearfix" v-if="!hideButtons">
       <slot name="footer"
             v-bind="slotProps">
-        <div class="wizard-footer-left">
-          <span @click="prevTab" @keyup.enter="prevTab" v-if="displayPrevButton" role="button" tabindex="0">
-            <slot name="prev" v-bind="slotProps">
-              <wizard-button :style="fillButtonStyle"
-                             :disabled="loading">
-                {{backButtonText}}
-              </wizard-button>
-            </slot>
-          </span>
-          <slot name="custom-buttons-left" v-bind="slotProps"></slot>
-        </div>
-
         <div class="wizard-footer-right">
           <slot name="custom-buttons-right" v-bind="slotProps"></slot>
           <span @click="nextTab" @keyup.enter="nextTab" v-if="isLastStep" role="button" tabindex="0">
               <slot name="finish" v-bind="slotProps">
-               <wizard-button :style="fillButtonStyle">
+               <wizard-button class="nextButton">
                 {{finishButtonText}}
               </wizard-button>
             </slot>
           </span>
           <span @click="nextTab" @keyup.enter="nextTab" role="button" tabindex="0" v-else>
            <slot name="next" v-bind="slotProps">
-             <wizard-button :style="fillButtonStyle"
+             <wizard-button  class="nextButton"
                             :disabled="loading">
               {{nextButtonText}}
+              <svg width="8" height="15" viewBox="0 0 8 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M7.00611 7.78538L7.35977 7.43173L7.00601 7.07817L0.521748 0.597712C0.501952 0.575604 0.500931 0.539554 0.524088 0.515317C0.547007 0.494999 0.58219 0.494895 0.605235 0.515003L7.4823 7.39016C7.48244 7.3903 7.48257 7.39044 7.48271 7.39057C7.50576 7.41428 7.50576 7.45318 7.48271 7.47689C7.48257 7.47703 7.48244 7.47717 7.4823 7.4773L0.599306 14.3584L0.599258 14.3584C0.588128 14.3696 0.574448 14.3755 0.557233 14.3755C0.529697 14.3755 0.5 14.3509 0.5 14.3145C0.5 14.3001 0.505337 14.2862 0.51711 14.2744L7.00611 7.78538Z" fill="white" stroke="white"/>
+</svg>
+
              </wizard-button>
            </slot>
          </span>
@@ -78,7 +80,7 @@
   import {isPromise, findElementAndFocus, getFocusedTabIndex} from './helpers'
 
   export default {
-    name: 'form-wizard',
+    name: 'gds-form-wizard',
     components: {
       WizardButton,
       WizardStep
@@ -98,11 +100,11 @@
       },
       nextButtonText: {
         type: String,
-        default: 'Next'
+        default: 'Continuar'
       },
       backButtonText: {
         type: String,
-        default: 'Back'
+        default: 'voltar'
       },
       finishButtonText: {
         type: String,
@@ -118,7 +120,7 @@
        */
       color: {
         type: String,
-        default: '#e74c3c'
+        default: '#4E46B6'
       },
       errorColor: {
         type: String,
@@ -161,6 +163,10 @@
         validator: (value) => {
           return value >= 0
         }
+      },
+      progressBarShow: {
+        type: Boolean,
+        default: true
       }
     },
     provide () {
@@ -201,11 +207,11 @@
         return this.activeTabIndex !== 0
       },
       stepPercentage () {
-        return 1 / (this.tabCount * 2) * 100
+        return 1 / (this.tabCount - 1) * 100
       },
       progressBarStyle () {
         return {
-          backgroundColor: this.color,
+          background: 'linear-gradient(320.52deg, #4E46B6 3.6%, #8AE21A 102.85%)',
           width: `${this.progress}%`,
           color: this.color
         }
@@ -220,11 +226,7 @@
       progress () {
         let percentage = 0
         if (this.activeTabIndex > 0) {
-          let stepsToAdd = 1
-          let stepMultiplier = 2
-          percentage = this.stepPercentage * ((this.activeTabIndex * stepMultiplier) + stepsToAdd)
-        } else {
-          percentage = this.stepPercentage
+          percentage = this.stepPercentage * this.activeTabIndex
         }
         return percentage
       }

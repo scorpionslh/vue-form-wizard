@@ -1,24 +1,24 @@
-import FormWizard from './components/FormWizard.vue'
-import TabContent from './components/TabContent.vue'
-import WizardButton from './components/WizardButton.vue'
-import WizardStep from './components/WizardStep.vue'
-const VueFormWizard = {
+import GdsFormWizard from './components/FormWizard.vue'
+import GdsTabContent from './components/TabContent.vue'
+import GdsWizardButton from './components/WizardButton.vue'
+import GdsWizardStep from './components/WizardStep.vue'
+const GdsVueFormWizard = {
   install (Vue) {
-    Vue.component('form-wizard', FormWizard)
-    Vue.component('tab-content', TabContent)
-    Vue.component('wizard-button', WizardButton)
-    Vue.component('wizard-step', WizardStep)
+    Vue.component('gds-form-wizard', GdsFormWizard)
+    Vue.component('gds-tab-content', GdsTabContent)
+    Vue.component('gds-wizard-button', GdsWizardButton)
+    Vue.component('gds-wizard-step', GdsWizardStep)
   }
 }
 // Automatic installation if Vue has been added to the global scope.
 if (typeof window !== 'undefined' && window.Vue) {
-  window.Vue.use(VueFormWizard)
+  window.Vue.use(GdsVueFormWizard)
 }
 
-export default VueFormWizard
+export default GdsVueFormWizard
 export {
-  FormWizard,
-  TabContent,
-  WizardButton,
-  WizardStep
+  GdsFormWizard,
+  GdsTabContent,
+  GdsWizardButton,
+  GdsWizardStep
 }

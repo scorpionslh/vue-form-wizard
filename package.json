@@ -1,8 +1,8 @@
 {
-  "name": "vue-form-wizard",
+  "name": "@scorpionslh/gds-form-wizard",
   "version": "0.8.4",
-  "description": "A vue based tab/form wizard",
-  "main": "dist/vue-form-wizard.js",
+  "description": "A vue based tab/form wizard forked by https://github.com/cristijora/vue-form-wizard",
+  "main": "dist/gds-form-wizard.js",
   "files": [
     "dist",
     "types",
@@ -30,7 +30,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/cristijora/vue-form-wizard"
+    "url": "git+https://github.com/scorpionslh/vue-form-wizard.git"
   },
   "devDependencies": {
     "autoprefixer": "^7.2.2",
@@ -119,5 +119,14 @@
     "last 2 versions",
     "not ie <= 8"
   ],
-  "dependencies": {}
+  "dependencies": {},
+  "bugs": {
+    "url": "https://github.com/scorpionslh/vue-form-wizard/issues"
+  },
+  "directories": {
+    "doc": "docs",
+    "test": "test"
+  },
+  "author": "",
+  "license": "ISC"
 }
