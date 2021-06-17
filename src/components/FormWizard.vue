@@ -8,7 +8,7 @@
       </slot>
     </div>
     <div class="wizard-navigation">
-       <div class="wizard-progress-with-circle" style="top:0 !important;" v-if="progressBarShow">
+       <div class="wizard-progress-with-circle" style="top:0 !important" v-if="progressBarShow">
         <div class="wizard-progress-bar"
              :style="progressBarStyle"></div>
       </div>
